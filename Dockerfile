@@ -1,22 +1,16 @@
-FROM debian:9
+FROM alpine:3.12
 
-# apt-get and system utilities
-RUN apt-get update && apt-get install -y \
-	curl apt-transport-https debconf-utils gnupg2 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk --update --no-cache add busybox \
+    && apk --no-cache add busybox-extras \
+    && apk --no-cache add curl
 
-# adding custom MS repository
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/debian/9/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN printf '%s\n' \
+  '#!/bin/sh' \
+  '' \
+  'while true' \
+  'do' \
+  'sleep 15' \
+  'done' \
+> /run/init.sh && chmod a+x /run/init.sh
 
-# Add RClone (instal curl if not exist)
-RUN apt-get update && apt-get install && apt-get install busybox -y \
-	&& curl https://rclone.org/install.sh | bash \
-    && rm -rf /var/lib/apt/lists/*
-
-ENV LANG en_US.utf8
-RUN echo "Asia/Ho_Chi_Minh" > /etc/timezone
-
-ADD run.sh /tmp/run.sh
-RUN chmod +x /tmp/run.sh
-ENTRYPOINT ["/tmp/run.sh"]
+ENTRYPOINT ["/run/init.sh"]
