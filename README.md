@@ -20,5 +20,5 @@ Example : ping, curl, etc ...
 docker run -itd --name testtools ngacareer/testtools
 docker exec -it testtools bin/sh
 # ping ngacareer.com
-# curl ngacareer.com
+# curl https://ngacareer.com
  ```
