@@ -24,7 +24,7 @@ docker exec -it testtools bin/sh
  ```
  - On Kubernetes
  ```
-kubectl run -i -t testtools --image=ngacareer/testtools
+kubectl run testtools --image=ngacareer/testtools
 kubectl exec -it testtools bin/sh
 #ping ngacareer.com
 #curl https://ngacareer
