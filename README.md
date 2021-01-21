@@ -15,10 +15,17 @@ The image is a Linux lightweight, It has been integrated with common command lin
 Example : ping, curl, etc ...
 
 ## How to use this image
-- On Docker environment 
+- On Docker 
 ```
 docker run -itd --name testtools ngacareer/testtools
 docker exec -it testtools bin/sh
 # ping ngacareer.com
 # curl https://ngacareer.com
+ ```
+ - On Kubernetes
+ ```
+kubectl run -i -t testtools --image=ngacareer/testtools
+kubectl exec -it testtools bin/sh
+#ping ngacareer.com
+#curl https://ngacareer
  ```
