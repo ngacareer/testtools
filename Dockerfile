@@ -9,6 +9,8 @@ FROM alpine
 
 MAINTAINER TriuHv [...]
 
+USER root
+
 ENV CURL_VERSION 7.74.0
 
 RUN apk --update --no-cache add busybox busybox-extras curl openssl openssl-dev dumb-init ca-certificates
@@ -33,6 +35,8 @@ RUN wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.bz2 \
     && rm -r curl-$CURL_VERSION \
     && rm -r /var/cache/apk \
     && rm -r /usr/share/man
+    
+RUN usermod --login user --move-home --home /home/user default    
 
 RUN printf '%s\n' \
   '#!/bin/sh' \
@@ -42,5 +46,7 @@ RUN printf '%s\n' \
   'sleep 15' \
   'done' \
 > /run/entrypoint.sh && chmod a+x /run/entrypoint.sh
+
+USER 1001
 
 ENTRYPOINT ["/usr/bin/dumb-init", "/run/entrypoint.sh"]
