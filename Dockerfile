@@ -13,7 +13,7 @@ USER root
 
 ENV CURL_VERSION 7.74.0
 
-RUN apk --update --no-cache add busybox busybox-extras curl openssl openssl-dev dumb-init ca-certificates
+RUN apk --update --no-cache add curl openssl openssl-dev dumb-init ca-certificates
 RUN apk --update --no-cache --virtual add g++ make perl
 
 RUN wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.bz2 \
@@ -35,8 +35,10 @@ RUN wget https://curl.haxx.se/download/curl-$CURL_VERSION.tar.bz2 \
     && rm -r curl-$CURL_VERSION \
     && rm -r /var/cache/apk \
     && rm -r /usr/share/man
-    
-RUN usermod --login user --move-home --home /home/user default    
+
+RUN chmod 4755 -R /bin/busybox
+
+RUN addgroup -S norootgroup && adduser -S nonroot -G norootgroup -u 1001 -D -H
 
 RUN printf '%s\n' \
   '#!/bin/sh' \
@@ -49,4 +51,4 @@ RUN printf '%s\n' \
 
 USER 1001
 
-ENTRYPOINT ["/usr/bin/dumb-init", "/run/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/dumb-init","/run/entrypoint.sh"]
